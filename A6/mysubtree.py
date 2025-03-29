@@ -1,4 +1,6 @@
 
+# CPSC 413 Winter 2025 - Assignment 6 Problem 2
+# Benny Liang, Ivan Agalakov
 
 def identity(x):
     return x
@@ -15,9 +17,7 @@ def rec(vertex, left, right, colors):
     
     left_child_id = left[vertexidx]
     right_child_id = right[vertexidx]
-    # print(f"parent id: {vertex} | left id: {left_child_id} | right id: {right_child_id}")
     
-    # return res
     # if `vertex` is a leaf
     if left[vertexidx] == 0: # if left is nill, then right is nill too
         res[0] = 0      # a = 0
