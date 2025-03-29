@@ -200,4 +200,5 @@ if __name__ == '__main__':
 #     return [a,b,c] // [a, b, c_arr]
 
 # a = max(left.a, right.a, c)
+# c = max(c, 1)
 # return [a, False, c]
