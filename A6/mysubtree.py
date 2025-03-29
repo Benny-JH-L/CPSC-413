@@ -20,8 +20,9 @@ def rec(vertex, left, right, colors):
     # return res
     # if `vertex` is a leaf
     if left[vertexidx] == 0: # if left is nill, then right is nill too
-        res[1] = False
-        res[2] = 1
+        res[0] = 0      # a = 0
+        res[1] = False  # b = False
+        res[2] = 1      # c = 1
         print(f"\t[base case]: ({res})")
         return res
     else:
@@ -29,56 +30,54 @@ def rec(vertex, left, right, colors):
         left_col = colors[left_child_id-1]
         right_col = colors[right_child_id-1]
     
-        tup_left = rec(left_child_id, left, right, colors)
-        tup_right = rec(right_child_id, left, right, colors)
+        left_a, left_b, left_c = rec(left_child_id, left, right, colors)
+        right_a, right_b, right_c = rec(right_child_id, left, right, colors)
 
         a = 0
         b = False
         c = 0
+        include_parent = False  # should we count the parent in the current valid sub tree size
         
-        if (tup_left[1]):
-            pass
-        
-        if (tup_right[1]):
-            pass
-        
-        elif (parent_col == left_col or parent_col == right_col):   # parent connect's the left and right current sub trees
-            c = tup_left[2] + tup_right[2] + 1
-            a = max(tup_left[0], tup_right[0], c)   # update max tree size found
-        else:
-            a = [tup_left[0], tup_right[0]]
+        # case for left child
+        if (left_col == parent_col):
+            include_parent = True
+            c += left_c
+            if (left_b):    # This child was not included in the current sub tree size, becuase it needed to be checked,
+                c += 1      # add it to the sub tree size
+        # Left child may not be the same color as its parent but we could potentially still add the left child's current sub tree
+        # size to this current sub tree size, thus we need to ask this left child's grandparent (parent of parent) if its parent 
+        # can be included to the current sub tree size
+        elif (left_col != parent_col and left_c > 1 and (not left_b)):
+            c += left_c
             b = True
-            c = [tup_left[2], tup_right[2]]
         
-        res[0] = max(a, c, tup_left[0], tup_right[0])
+        # case for right child, will be similar case to left child
+        if (right_col == parent_col):
+            include_parent = True
+            c += right_c
+            if (right_b):
+                c += 1
+        elif (right_col != parent_col and right_c > 1 and (not right_b)):
+            c += right_c
+            b = True
+        
+        if (include_parent):
+            c += 1              # add parent to current valid sub tree
+            b = False           # if the parent was added to current subtree then no need to ask its parent (parent of parent) to check if can be included to the current tree
+        
+        # case, need to check parent of parent whether or not parent is included to current subtree
+        if (b):
+            a = max(left_a, right_a)
+            res[0] = a
+            res[1] = b
+            res[2] = c
+            return res
+        
+        a = max(left_a, right_a, c)
+        c = max(c, 1)   # case where a parent can make no valid sub tree (ie, both children are leaves and are different color to the parent)
+        res[0] = a
         res[1] = b
         res[2] = c
-        # if (left_tup[1]):
-        #     if (parent_col != left_col):
-        #         a = max(left_tup[0][0], left_tup[0][1])
-        #         b = False
-        #         c = 0
-        #     else:   # root_col == left_col
-        #         c = left_tup[2][0] + left_tup[2][1] + 1
-        #         a = max(c, left_tup[0][0], left_tup[0][1])
-        # if (right_tup[1]):
-        #     if (parent_col != right_col):
-        #         a = max(right_tup[0][0], right_tup[0][1], a)
-        #         b = False
-        #         c = 0
-        #     else:   # root_col == right_col
-        #         c1 = right_tup[2][0] + right_tup[2][1] + 1
-        #         a = max(c1, right_tup[0][0], right_tup[0][1], a, c)
-            
-        # elif (parent_col == left_col or parent_col == right_col):
-        #     c = left_tup[2] + right_tup[2] + 1
-        #     a = max(left_tup[0], right_tup[0], c)
-        #     b = False
-        # elif ((parent_col != left_col or parent_col != right_col) and (left_tup[2] > 0 or right_tup[2] > 0)):  # or?
-        #     a = [left_tup[0], right_tup[0]]
-        #     b = True
-        #     c = [left_tup[2], right_tup[2]]
-        
         print(f"parent id: {vertex} | left id: {left_child_id} | right id: {right_child_id}\n\ttup:{res}")
         # print(f"tup: {res}")
         return res
@@ -150,3 +149,55 @@ if __name__ == '__main__':
             
         # res[0] = max(res[0], left_curr_subtree_size, right_curr_subtree_size, left_max_size, right_max_size)
         # res[2] = max(left_curr_subtree_size, right_curr_subtree_size)
+        
+        
+# rec() PSUEDO CODE (most recent, Mar 28 9;07pm):
+# a = 0
+# b = false
+# c = 0
+# c_arr = []
+# include_parent = false
+
+# if (left color = parent color):
+#     //c++
+#     include_parent = true
+#     c += left.c
+#     //if (left.a = 0 and left.c = 1)// for parent with leaf child
+#         //c++
+#     if (left.b)
+#         c++
+# // left child may not be same color but its subtree 
+# // could still be added to curr_tree, need parent check
+# else if (left color != parent color & left.c > 1 & !left.b):
+#     //c_arr[0] = left.c
+#     c += c.left
+#     b = true
+
+# if (right color = parent color):
+#     include_parent = true
+
+#     //if (right.b = true):
+#         // // c += right.b[1]
+#         // c += right.c
+#     c += right.c
+#     if (right.b)
+#         c++
+#     //else if (right.a = 0 and right.c = 1)// for parent with leaf child
+#         //c++ 
+# // right child may not be same color but its subtree 
+# // could still be added to curr_tree, need parent check
+# else if (right color != parent color & right.c > 1 & !right.b):
+#     // c_arr[1] = right.c
+#     c += c.right
+#     b = true
+   
+# if (include_parent) // add parent to curr_tree
+#     c++
+#     b = false // if the parent was added to curr_subtree then no need to ask its parent to check if it can be included to curr_subtree
+
+# if (b = True):
+#     a = max(left.a, right.a)
+#     return [a,b,c] // [a, b, c_arr]
+
+# a = max(left.a, right.a, c)
+# return [a, False, c]
