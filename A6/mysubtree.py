@@ -86,7 +86,7 @@ def selected(n, root, left, right, colors):
     # Output an integer sz_subtree -- insert here --
     # This is the computation of sz_subtree from res
     res = rec(root, left, right, colors)
-    sz_subtree = res[0]     # return value is `a`
+    sz_subtree = res[0] if res[0] > 1 else 0    # return value is `a`, size of 1 is not a valid subtree, so we output 0 for it
     return sz_subtree
 
 if __name__ == '__main__':
