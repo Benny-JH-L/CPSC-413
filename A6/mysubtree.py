@@ -23,7 +23,7 @@ def rec(vertex, left, right, colors):
         res[0] = 0      # a = 0
         res[1] = False  # b = False
         res[2] = 1      # c = 1
-        print(f"\t[base case]: ({res})")
+        # print(f"\t[base case]: ({res})")  # debug
         return res
     else:
         parent_col = colors[vertexidx]
@@ -78,35 +78,33 @@ def rec(vertex, left, right, colors):
         res[0] = a
         res[1] = b
         res[2] = c
-        print(f"parent id: {vertex} | left id: {left_child_id} | right id: {right_child_id}\n\ttup:{res}")
-        # print(f"tup: {res}")
+        # print(f"parent id: {vertex} | left id: {left_child_id} | right id: {right_child_id}\n\ttup:{res}")    # debug
         return res
     
     
-
 def selected(n, root, left, right, colors):
-    res = rec(root, left, right, colors)
-    sz_subtree = res[0]
     # Output an integer sz_subtree -- insert here --
     # This is the computation of sz_subtree from res
+    res = rec(root, left, right, colors)
+    sz_subtree = res[0]     # return value is `a`
     return sz_subtree
 
 if __name__ == '__main__':
-    n = 21
-    root = 11
-    left = [2,0,0,17,0,4,0,0,0,0,16,3,0,0,0,21,15,19,0,12,10]
-    right = [14,0,0,5,0,9,0,0,0,0,18,7,0,0,0,1,8,6,0,13,20]
-    colors = [1,3,2,2,3,2,2,1,2,4,3,3,1,1,4,1,4,4,1,4,4]
-    # res = [0] * 3
-    # print (res)
-    # identity()
-    val = selected(n, root, left, right, colors)
-    print(val if val > 1 else 0)
+    identity()
+
+    # n = 21
+    # root = 11
+    # left = [2,0,0,17,0,4,0,0,0,0,16,3,0,0,0,21,15,19,0,12,10]
+    # right = [14,0,0,5,0,9,0,0,0,0,18,7,0,0,0,1,8,6,0,13,20]
+    # colors = [1,3,2,2,3,2,2,1,2,4,3,3,1,1,4,1,4,4,1,4,4]
+    # largest_subtree_size = selected(n, root, left, right, colors)
+    # print(largest_subtree_size if largest_subtree_size > 1 else 0)  # size 1 is not a valid subtree, so we output 0 for it
     
-    root = 1
-    print(f"root id({root-1}) | left id({left[root-1]-1}) | right id({right[root-1]-1})")
-    root = 1
-    print(f"root({root}, col[{colors[root-1]}]) | left({left[root-1]}) | right({right[root-1]})")
+    # debug
+    # root = 1
+    # print(f"root id({root-1}) | left id({left[root-1]-1}) | right id({right[root-1]-1})")
+    # root = 1
+    # print(f"root({root}, col[{colors[root-1]}]) | left({left[root-1]}) | right({right[root-1]})")
 
 
 # The following input is code for the tree shown on the right in the assignment. The nodes are
@@ -122,34 +120,7 @@ if __name__ == '__main__':
 # # In figure: 1 = yellow, 2 = red, 3 = purple, 4 = blue
 # # colors = [y,p,r,r,p,r,r,y,r,b,p,p,y,y,b,y,b,b,y,b,b]
 # The code mysubtree.selected(n,root,left,right,colors) is used to test examples such as
-# the above. Insert your recurrences at the three code locations shown above.
-
-        # left_child = left[vertexidx] - 1
-        # right_child = right[vertexidx] - 1
-        # left_max_size, left_parent_check, left_curr_subtree_size = rec(left_child, left, right, colors)   # call on left child
-        # right_max_size, right_parent_check, right_curr_subtree_size = rec(right_child, left, right, colors)   # call on right child
-
-        # if (left_parent_check): # parent needs to check if its child should be included to the  `current_tree`
-        #     if (colors[vertexidx] == colors[left_child]):
-        #         left_curr_subtree_size += 2 # add parent and child to sub_tree
-                
-        # elif (colors[vertexidx] == colors[left_child]): # if parent is same color as left child
-        #     left_curr_subtree_size += 2 # add parent and child to sub_tree
-            
-        # if (right_parent_check):
-        #     if (colors[vertexidx] == colors[right_child]):
-        #         right_curr_subtree_size += 2 # add parent and child sub_tree
-        # elif (colors[vertexidx] == colors[right_child]):
-        #     right_curr_subtree_size += 2 # add parent and child sub_tree
-        
-        # if (colors[vertexidx] != colors[left_child] or colors[vertexidx] != colors[right_child]):
-        #     res[1] = True
-        # else:
-        #     res[1] = False
-            
-        # res[0] = max(res[0], left_curr_subtree_size, right_curr_subtree_size, left_max_size, right_max_size)
-        # res[2] = max(left_curr_subtree_size, right_curr_subtree_size)
-        
+# the above. Insert your recurrences at the three code locations shown above.        
         
 # rec() PSUEDO CODE (most recent, Mar 28 9;07pm):
 # a = 0
